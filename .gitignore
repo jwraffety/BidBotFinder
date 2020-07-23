@@ -2,3 +2,4 @@
 .idea/*
 info.csv
 output
+/.gradle/

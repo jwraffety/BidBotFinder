@@ -32,6 +32,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Features is responsible for extracting, after various filtering processes, DeviceProfiles to
+ * feed into our TensorFlow model to determine said DeviceProfile's likelihood of being a bot.
+ * @author Jackson Raffety
+ * @author Hayden Lee, Univerity of San Francisco
+ *
+ */
 public class Features {
   /**
    * This PTransform takes a PCollectionList that contains three PCollections of Strings.
@@ -42,36 +49,22 @@ public class Features {
    *
    * 3. InAppPurchaseProfile (separately provided) with unique bundles.
    *
-   * All of these proto messages are Base64-encoded (you can check ProtoUtils class for how to decode that, e.g.).
-   *
-   * [Step 1] First, in this PTransform, you must filter out (remove) DeviceProfiles whose DeviceIDs are found in the
-   * SuspiciousIDs as we are not going to consider suspicious users.
-   *
-   * [Step 2] Next, you ALSO filter out (remove) DeviceProfiles whose DeviceID's UUIDs are NOT in the following form:
-   *
+   * All of these proto messages are Base64-encoded.
+   * First, all DeviceProfiles whose DeviceID's are contained in SuspicousIDs are filtered out.
+   * 
+   * Next, all DeviceProfiles whose DeviceIDs are not in the following form: 
    * ???????0-????-????-????-????????????
+   * are removed from the PCollection. Effectively, this would "sample" the data at rate (1/16). 
+   * This sampling is mainly for efficiency reasons (may need to make predictions for millions of DeviceIDs).
    *
-   * Effectively, this would "sample" the data at rate (1/16). This sampling is mainly for efficiency reasons (later
-   * when you run your pipeline on GCP, the input data is quite large as you will need to make "predictions" for
-   * millions of DeviceIDs).
-   *
-   * To be clear, if " ...getUuid().charAt(7) == '0' " is true, then you process the DeviceProfile; otherwise, ignore
-   * it.
-   *
-   * [Step 3] Then, for each user (DeviceProfile), use the method in
+   * Finally, for each user (DeviceProfile), we use the method in
    * {@link edu.usfca.dataflow.utils.PredictionUtils#getInputFeatures(DeviceProfile, Map)} to obtain the user's
    * "Features" (to be used for TensorFlow model). See the comments for this method.
-   *
-   * Note that the said method takes in a Map (in addition to DeviceProfile) from bundles to IAPP, and thus you will
-   * need to figure out how to turn PCollection into a Map. We have done this in the past (in labs & lectures).
-   *
    */
   public static class GetInputToModel extends PTransform<PCollectionList<String>, PCollection<KV<DeviceId, float[]>>> {
 
     @Override
     public PCollection<KV<DeviceId, float[]>> expand(PCollectionList<String> pcList) {
-      // TODO: If duplicate deviceIDs are found, throw CorruptedDataException.
-      // Note that UUIDs are case-insensitive.
 
       //DeviceIds
       PCollectionView<List<DeviceId>> idView =

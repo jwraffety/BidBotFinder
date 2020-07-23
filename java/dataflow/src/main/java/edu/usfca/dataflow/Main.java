@@ -14,7 +14,8 @@ import edu.usfca.dataflow.jobs1.BidLogJob;
 import edu.usfca.dataflow.jobs2.PredictionJob;
 
 /**
- * Read the instructions provided in Google Docs, before you begin working on this project.
+ * @author Jackson
+ * The below courtesy of Hayden Lee of University of San Francisco.
  */
 public class Main {
   private static final Logger LOG = LoggerFactory.getLogger(Main.class);
@@ -23,18 +24,18 @@ public class Main {
   public final static String GCS_BUCKET = "gs://bucket-of-oh-snoes";
   public final static String REGION = "us-west1"; // Don't change this.
 
-  public final static String MY_BQ_DATASET = "project5"; // <- TODO change this to an existing dataset in your BigQuery.
+  public final static String MY_BQ_DATASET = "project5"; // <-change this to an existing dataset in your BigQuery.
   public final static String MY_BQ_TABLE = "my_proj5_table"; // <- this can be anything, and it'll be auto-created.
 
   public final static TableReference DEST_TABLE =
       new TableReference().setProjectId(GCP_PROJECT_ID).setDatasetId(MY_BQ_DATASET).setTableId(MY_BQ_TABLE);
 
-  // TODO: Change the following to the local path directory that contains the downloaded resource files.
+  // Change the following to the local path directory that contains your downloaded resource files.
   // It's recommended that you provide the absolute path here (not relative path)!
   // Note that, in this directory, "input/model" directories must be found (or the job will throw an exception).
   public final static String LOCAL_PATH_TO_RESOURCE_DIR = "/home/jwr2131/resources/project5-actual";
 
-  // TODO: Change the following to the GCS path that contains the resource files.
+  // Change the following to the GCS path that contains your resource files.
   // Note that (when you run jobs on GCP) you can override this by feeding the command-line argument.
   // Note that, in this directory, "input/model" directories must be found (or the job will throw an exception).
   public final static String GCS_PATH_TO_RESOURCE_DIR = GCS_BUCKET + "/project5-actual";
@@ -42,7 +43,7 @@ public class Main {
   // NOTE: You will not need to run the jobs through the main() method until you complete Tasks A & B.
   // Yet, you can still run them locally (which is the default behavior) to ensure your pipeline runs without errors.
   public static void main(String[] args) {
-    // TODO Take a look at MyOptions class in order to understand what command-line flags are available.
+    // Take a look at MyOptions class in order to understand what command-line flags are available.
     MyOptions options = PipelineOptionsFactory.fromArgs(args).as(MyOptions.class);
 
     final String job = options.getJob();

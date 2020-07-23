@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
+/**
+ * Suspicious IDs looks at various aspects of a given DeviceID to determine whether or not
+ * it may be a bot, and thus effecting the efficiency of a given ad campaign.
+ * @author Jackson
+ * @author Hayden Lee, University of San Francisco
+ */
 public class SuspiciousIDs {
   private static final Logger LOG = LoggerFactory.getLogger(SuspiciousIDs.class);
 
@@ -57,9 +63,6 @@ public class SuspiciousIDs {
    * ignored from the beginning).
    *
    * Default value is 10 (so, 11 or more valid BidLogs from the same user = suspicious).
-   *
-   * 
-   * NOTE: When you run your pipelines on GCP, we'll not use the default values for these thresholds (see the document).
    *
    * The default values are mainly for unit tests (so you can easily check correctness with rather small threshold
    * values).

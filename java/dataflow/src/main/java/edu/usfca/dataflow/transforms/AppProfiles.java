@@ -25,18 +25,16 @@ import edu.usfca.protobuf.Profile.AppProfile;
 import edu.usfca.protobuf.Profile.DeviceProfile;
 import edu.usfca.protobuf.Profile.DeviceProfile.AppActivity;
 
+/**
+ * Creates a PCollection of AppProfiles derived from a PCollection of DeviceProfiles.
+ * @author Jackson Raffety
+ * @author Hayden Lee, Univerity of San Francisco
+ */
 public class AppProfiles {
   /**
-   * "ComputeAppProfiles" takes in one PCollection of DeviceProfiles.
-   *
-   * If the input PCollection contains any duplicate Device IDs (recall that uuid is case-insensitive),
-   *
-   * then it must throw "CorruptedDataException".
-   *
-   * Otherwise, proceed to produce one AppProfile proto per "bundle" (String, case-sensitive).
-   *
-   * For each bundle (app), you should aggregate:
-   *
+   * ComputeAppProfiles recieves a PCollection of DeviceProfiles and outputs a PCollection of AppProfiles.
+   * AppProfiles are generated per bundle (the name of a given application).
+   * 
    * (1) "bundle": This is unique key (String) for each AppProfile, and is case-sensitive.
    *
    * (2) "user_count": This is the unique number of users (Device IDs) who have this app in their DeviceProfile's
@@ -44,12 +42,6 @@ public class AppProfiles {
    *
    * (3) "user_count_per_exchange": Same as (2), but it's a map from "Exchange" enum (its integer value) to the number
    * of unique DeviceIDs.
-   *
-   * (Note that this is simplified when compared to Project 2.)
-   *
-   * TODO: You can use instructor's reference code from project 2 and modify it (you'll need to fix a couple of things),
-   * or reuse yours. Note that either way you'll have to make changes because the requirements / proto definitions have
-   * changed slightly (things are simplified).
    */
   public static class ComputeAppProfiles extends PTransform<PCollection<DeviceProfile>, PCollection<AppProfile>> {
 
@@ -142,7 +134,11 @@ public class AppProfiles {
   }
 
   static final int LIFE_COUNT = -1;
-
+  
+  /**
+   * EmitData simply maps a given DeviceProfile to a KV <String,Integer>. The String object of the
+   * KV will be some DeviceProfile's application bundle, and the filler integer -1 as its value.
+   */
   static class EmitData extends DoFn<DeviceProfile, KV<String, Integer>> {
 
     @ProcessElement
@@ -151,9 +147,7 @@ public class AppProfiles {
       for (AppActivity app : dp.getAppList()) {
           c.output(KV.of(app.getBundle(), LIFE_COUNT));
           for (int exchange : app.getCountPerExchangeMap().keySet()) {
-            if (exchange < 0) {
-              continue;
-            }
+            if (exchange < 0) { continue; }
             c.output(KV.of(app.getBundle(), exchange));
           }
       }

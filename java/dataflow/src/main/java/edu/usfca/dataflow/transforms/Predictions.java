@@ -16,6 +16,11 @@ import org.tensorflow.Tensor;
 import edu.usfca.protobuf.Common.DeviceId;
 import edu.usfca.protobuf.Data.PredictionData;
 
+/**
+ * Predictions is responsible for classifying the given KV<DeviceId, float[]> as suspicious or not.
+ * @author Jackson
+ * @author Hayden Lee, University of San Francisco
+ */
 public class Predictions {
 
   /**
@@ -28,8 +33,6 @@ public class Predictions {
    *
    * Use it as a reference to implement "PredictDoFn" instead.
    *
-   * When you are ready to optimize it, you'll find the ungraded homework for Lab 09 useful (as well as sample code from
-   * L34: DF-TF).
    */
   public static DoFn<KV<DeviceId, float[]>, PredictionData> getPredictDoFn(String pathToModelDir) {
     return new PredictDoFn(pathToModelDir);
@@ -59,8 +62,6 @@ public class Predictions {
    * classification and score.
    *
    * As final output, PredictionData (proto) should be returned, which has two fields (DeviceId and double).
-   *
-   * NOTE: It's strongly recommended that you not change this code (so you can "keep" it as reference),
    *
    * and instead start implementing your own in PredictDoFn below. Then, once you're ready, simply change
    * "getPredictDoFn" above to return an instance of your new DoFn.
@@ -124,7 +125,6 @@ public class Predictions {
   }
 
   /**
-   * TODO: Use this starter code to implement your own PredictDoFn.
    *
    * You'll need to utilize DoFn's annotated methods & optimization techniques that we discussed in L10, L30, L34, and
    * Lab09.

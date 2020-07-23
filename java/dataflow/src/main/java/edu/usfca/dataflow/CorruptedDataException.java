@@ -1,8 +1,11 @@
 package edu.usfca.dataflow;
 
-// This is a wrapper class used mainly for grading.
-// This can be useful for you when you are debugging your code (because you can include arbitrary messages in
-// exception).
+/**
+ * @author Jackson
+ * The below courtesy of Hayden Lee of University of San Francisco.
+ * Can be useful for debugging.
+ */
+
 public class CorruptedDataException extends IllegalArgumentException {
 
   public CorruptedDataException() {

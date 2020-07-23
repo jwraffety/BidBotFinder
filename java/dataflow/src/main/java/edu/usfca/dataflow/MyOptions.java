@@ -4,6 +4,11 @@ import org.apache.beam.runners.dataflow.options.DataflowPipelineOptions;
 import org.apache.beam.sdk.options.Default;
 import org.apache.beam.sdk.options.Description;
 
+
+/**
+ * @author Jackson
+ * The below courtesy of Hayden Lee of University of San Francisco.
+ */
 public interface MyOptions extends DataflowPipelineOptions {
   @Description("Job name when running on GCP")
   @Default.String("dummy-this can be anything")
@@ -11,7 +16,7 @@ public interface MyOptions extends DataflowPipelineOptions {
 
   void setJob(String job);
 
-  // Default is set true, but when you work on task C, you'll want to specify "--isLocal=false"
+  // Default is set true. Specify "--isLocal=false" to run remotely.
   @Description("DirectRunner will be used if true")
   @Default.Boolean(true)
   boolean getIsLocal();

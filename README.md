@@ -1,12 +1,11 @@
 # BidBotFinder #
 
-BidBotFinder is an end-to-end data pipeline which translates online ad marketplace data into serializable, actionable insights on certain user's likelihood of being bots. The primary purpose of this pipeline is to make ad purchaser's purchased ad-space more effective, by increasing the likelihood their purchased ad space is seen by an actual human, potential customer, rather than a bot or program simply crawling webspace. Particular features of a potential ad-veiwer are used to construct a TensorFlow model which generates a prediction on whether that ad-viewer has human or programmatic characteristics.
+BidBotFinder is an end-to-end data pipeline which translates online ad marketplace data into serializable, actionable insights on certain user's likelihood of being bots. The primary purpose of this pipeline is to make advertisers' purchased ad-space more effective, by increasing the likelihood that their purchased ad-space is viewed by an actual human, potential customer, rather than a bot or program simply crawling webspace. Particular features of a potential ad-viewer are used to construct a TensorFlow model which generates a prediction on whether that ad-viewer has human or programmatic characteristics.
 
-# Deadline #
+# Pipeline 1 #
 
-May 1 by midnight for all three tasks.
+Pipeline 1's purpose is to generate from TFRecord-encoded BidLog proto messages three separate PCollections: DeviceProfiles, AppProfiles, and SuspiciousIDs. BidLogs are log data from ad-bidding marketplaces. BidLogs contain useful information, such as the original bid request, the bid price, the bid result, the exchange at which the bid was placed, as well as timestamps when the bid was recieved and processed. These BidLogs are used to generate DeviceProfiles, which contain IDs for the given device, applications to which the device is subscribed, locations at which the device was used, as well as timestamps of first and last device activity. We develop from these DeviceProfiles through various PTransformations AppProfiles and SuspiciousIDs: using aggregated information on various applications listed as used in DeviceProfiles, we generate AppProfiles, which contains data related to particular, unique, applications. Another PTransform uses these AppProfiles and DeviceProfiles to determine whether a given DeviceID may be suspicious, meaning that by certain characteristics of the relevant DeviceID's data, we believe the device may be being utilized by a non-human. See the comments for these various PCollections and transformations under BidLogJob for more specific information.
 
-# Detailed Instructions #
-
-https://docs.google.com/document/d/1BzzXFtQS55qHdDQvsgdR07JJ9sjRkpgh72ked0sHKQw/edit?usp=sharing
+# Pipeline 2 #
+Pipeline 2's purpose is to generate a PCollection of DeviceProfiles which, after filtering out SuspiciousIDs, will be fed into a TensorFlow model to predict the likelihood of a given device making another purchase within the next day or so. The results of this modeling data is uploaded to Google Cloud Storage in JSON format and also to Google BigQuery to be queryable. See the comments for these various PCollections and transformations under PredictionJob for more specific information.
 

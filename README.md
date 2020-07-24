@@ -1,6 +1,6 @@
 # BidBotFinder #
 
-BidBotFinder is an end-to-end data pipeline which translates online ad marketplace data into serializable, actionable insights on certain user's likelihood of being bots. The primary purpose of this pipeline is to make advertisers' purchased ad-space more effective, by increasing the likelihood that their purchased ad-space is viewed by an actual human, potential customer, rather than a bot or program simply crawling webspace. Particular features of a potential ad-viewer are used to construct a TensorFlow model which generates a prediction on whether that ad-viewer has human or programmatic characteristics.
+BidBotFinder is an end-to-end data pipeline which translates online ad marketplace data into serializable, actionable insights on certain user's likelihood of making further purchases. The primary purpose of this pipeline is to make advertisers' purchased ad-space more effective by two methods: one, by increasing the likelihood that their purchased ad-space is viewed by an actual human, rather than a bot or program simply crawling webspace; and two, by predicting the likelihood that a given device will make another purchase based off of a TensorFlow model.
 
 # Pipeline 1 #
 
